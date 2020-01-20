@@ -111,18 +111,16 @@ const init = async () => {
       const channel = new stream.PassThrough();
 
       async function writeData() {
-        
+        let interval = setInterval(() => {
+          channel.write(' ')
+        }, 10000);
+        await sleep(60000);
+        clearInterval(interval);
+        channel.write('data string');
+        channel.end();
       }
 
-      let interval = setInterval(() => {
-        channel.write(' ')
-      }, 10000);
-      await sleep(60000);
-      clearInterval(interval);
-      channel.write('data string');
-      channel.end();
-
-      // writeData();
+      writeData();
 
       // return h.response(channel).type('text/event-stream');
       return channel
@@ -139,18 +137,16 @@ const init = async () => {
       const channel = new stream.PassThrough();
 
       async function writeData() {
-        
+        let interval = setInterval(() => {
+          channel.write('')
+        }, 10000);
+        await sleep(60000);
+        clearInterval(interval);
+        channel.write('data string');
+        channel.end();
       }
 
-      let interval = setInterval(() => {
-        channel.write('')
-      }, 10000);
-      await sleep(60000);
-      clearInterval(interval);
-      channel.write('data string');
-      channel.end();
-
-      // writeData();
+      writeData();
 
       // return h.response(channel).type('text/event-stream');
       return channel
