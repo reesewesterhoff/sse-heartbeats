@@ -18,7 +18,7 @@ const init = async () => {
   const server = Hapi.server({
     // listener: http2Server,
     port: process.env.PORT || 3000,
-    host: 'localhost'
+    // host: 'localhost'
   });
 
   server.route({
