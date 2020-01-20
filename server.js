@@ -108,21 +108,22 @@ const init = async () => {
       cors: true
     },
     handler: async (request, h) => {
-      const channel = new stream.PassThrough();
+      // const channel = new stream.PassThrough();
 
       async function writeData() {
         await sleep(60000);
-        channel.write('data string');
+        request.raw.res.write('data string');
+        request.raw.res.end();
       }
 
       setInterval(() => {
-        channel.write(' ');
+        request.raw.res.write(' ')
       }, 5000);
 
       writeData();
 
       // return h.response(channel).type('text/event-stream');
-      return h.response(channel);
+      return 'ok'
     }
   });
 
