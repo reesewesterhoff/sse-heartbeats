@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 const Hapi = require('@hapi/hapi');
 // const http2 = require('http2')
@@ -90,9 +90,9 @@ const init = async () => {
       }
 
       setInterval(() => {
-        channel.write('event: heartbeat\n');
-        channel.write('data: \n\n');
-      }, 5000);
+        // channel.write('event: heartbeat\n');
+        channel.write(': \n\n');
+      }, 10000);
 
       writeData();
 
@@ -113,8 +113,8 @@ const init = async () => {
       async function writeData() {
         let interval = setInterval(() => {
           channel.write(' ')
-        }, 10000);
-        await sleep(60000);
+        }, 2000);
+        await sleep(5000);
         clearInterval(interval);
         channel.write('data string');
         channel.end();
