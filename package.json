@@ -1,0 +1,26 @@
+{
+  "name": "sse-heartbeats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reesewesterhoff/sse-heartbeats.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reesewesterhoff/sse-heartbeats/issues"
+  },
+  "homepage": "https://github.com/reesewesterhoff/sse-heartbeats#readme",
+  "dependencies": {
+    "@hapi/hapi": "^19.0.5",
+    "@hapi/inert": "^6.0.1",
+    "nodemon": "^2.0.2"
+  }
+}
