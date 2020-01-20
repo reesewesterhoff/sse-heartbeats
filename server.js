@@ -101,6 +101,31 @@ const init = async () => {
     }
   });
 
+  server.route({
+    method: 'GET',
+    path: '/nhb',
+    options: {
+      cors: true
+    },
+    handler: async (request, h) => {
+      const channel = new stream.PassThrough();
+
+      async function writeData() {
+        await sleep(60000);
+        channel.write('data string');
+      }
+
+      setInterval(() => {
+        channel.write(' ');
+      }, 5000);
+
+      writeData();
+
+      // return h.response(channel).type('text/event-stream');
+      return h.response(channel);
+    }
+  });
+
   server.events.on('request', (request, event, tags) => {
     // console.log(request);
     // console.log(event);
