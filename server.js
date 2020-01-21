@@ -4,6 +4,7 @@ const Hapi = require('@hapi/hapi');
 // const http2 = require('http2')
 const fs = require('fs');
 const stream = require('stream')
+const Path = require('path');
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -19,7 +20,25 @@ const init = async () => {
     // listener: http2Server,
     port: process.env.PORT || 3000,
     // host: 'localhost'
+    // routes: {
+    //   files: {
+    //     relativeTo: Path.join(__dirname, 'public')
+    //   }
+    // }
   });
+
+  // await server.register(require('@hapi/inert'));
+
+  // server.route({
+  //   method: 'GET',
+  //   path: '/{param*}',
+  //   handler: {
+  //     directory: {
+  //       path: '.',
+  //       redirectToSlash: true
+  //     }
+  //   }
+  // });
 
   server.route({
     method: 'GET',
@@ -32,8 +51,11 @@ const init = async () => {
   server.route({
     method: 'GET',
     path: '/ping',
+    options: {
+      cors: true
+    },
     handler: (request, h) => {
-      console.log(h);
+      console.log('ping endpoint hit');
       return 'pong!';
     }
   });
@@ -82,17 +104,18 @@ const init = async () => {
       cors: true
     },
     handler: async (request, h) => {
+      console.log('hb hit')
       const channel = new stream.PassThrough();
 
       async function writeData() {
-        await sleep(60000);
+        await sleep(10000);
         channel.write('data:' + '<<<DATA>>>' + '\n\n');
       }
 
       setInterval(() => {
-        // channel.write('event: heartbeat\n');
-        channel.write(': \n\n');
-      }, 10000);
+        channel.write('event: heartbeat\n');
+        channel.write('data: \n\n');
+      }, 1000);
 
       writeData();
 
@@ -109,12 +132,13 @@ const init = async () => {
     },
     handler: async (request, h) => {
       const channel = new stream.PassThrough();
+      console.log('nhbspace hit')
 
       async function writeData() {
         let interval = setInterval(() => {
           channel.write(' ')
-        }, 2000);
-        await sleep(5000);
+        }, 25000);
+        await sleep(120000);
         clearInterval(interval);
         channel.write('data string');
         channel.end();
