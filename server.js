@@ -56,6 +56,8 @@ const init = async () => {
     },
     handler: (request, h) => {
       console.log('ping endpoint hit');
+      sleep(25000);
+
       return 'pong!';
     }
   });
@@ -178,9 +180,9 @@ const init = async () => {
   });
 
   server.events.on('request', (request, event, tags) => {
-    // console.log(request);
-    // console.log(event);
-    // console.log(tags);
+    console.log('Request:', request);
+    console.log('Event:', event);
+    console.log('Tags:', tags);
     if (tags.request && tags.abort && tags.error) {
       console.log(`Client aborted connection (${request.info.id})`);
     }
@@ -189,6 +191,10 @@ const init = async () => {
   server.events.on('response', (request) => {
     console.log(`Response sent (${request.info.id})`);
   });
+
+  server.events.on('log', (event, tags) => {
+    console.log('Log event hit', event, tags)
+  })
 
   await server.start();
   console.log(`Server running on ${server.info.uri}`);
