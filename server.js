@@ -54,9 +54,9 @@ const init = async () => {
     options: {
       cors: true
     },
-    handler: (request, h) => {
+    handler: async (request, h) => {
       console.log('ping endpoint hit');
-      sleep(25000);
+      await sleep(25000);
 
       return 'pong!';
     }
