@@ -5,6 +5,7 @@ const Hapi = require('@hapi/hapi');
 const fs = require('fs');
 const stream = require('stream')
 const Path = require('path');
+const Crypto = require('crypto');
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -26,6 +27,18 @@ const init = async () => {
     //   }
     // }
   });
+
+  server.method('preResponse', (request, h) => {
+
+    const response = request.response;
+    console.log('begin?', request.info.id)
+
+    response.events.once('finish', () => {
+      console.log('finished!', request.info.id);
+    });
+
+    return h.continue;
+  })
 
   // await server.register(require('@hapi/inert'));
 
@@ -52,13 +65,25 @@ const init = async () => {
     method: 'GET',
     path: '/ping',
     options: {
-      cors: true
+      cors: true,
+      response: {
+        failAction: 'error'
+      },
+      ext: {
+        onPreResponse: { method: server.methods.preResponse }
+      }
     },
     handler: async (request, h) => {
-      console.log('ping endpoint hit');
-      await sleep(25000);
+      try {
+        console.log('ping endpoint hit', request.info.id);
+        await sleep(20000);
+        const response = `orci.`;
+        // response = 9;
 
-      return 'pong!';
+        return response;
+      } catch (error) {
+        return error;
+      }
     }
   });
 
@@ -130,7 +155,10 @@ const init = async () => {
     method: 'GET',
     path: '/nhbspace',
     options: {
-      cors: true
+      cors: true,
+      ext: {
+        onPreResponse: { method: server.methods.preResponse }
+      }
     },
     handler: async (request, h) => {
       const channel = new stream.PassThrough();
@@ -139,8 +167,8 @@ const init = async () => {
       async function writeData() {
         let interval = setInterval(() => {
           channel.write(' ')
-        }, 25000);
-        await sleep(120000);
+        }, 2000);
+        await sleep(10000);
         clearInterval(interval);
         channel.write('data string');
         channel.end();
@@ -180,7 +208,7 @@ const init = async () => {
   });
 
   server.events.on('request', (request, event, tags) => {
-    console.log('Request:', request);
+    // console.log('Request:', request);
     console.log('Event:', event);
     console.log('Tags:', tags);
     if (tags.request && tags.abort && tags.error) {
@@ -191,10 +219,6 @@ const init = async () => {
   server.events.on('response', (request) => {
     console.log(`Response sent (${request.info.id})`);
   });
-
-  server.events.on('log', (event, tags) => {
-    console.log('Log event hit', event, tags)
-  })
 
   await server.start();
   console.log(`Server running on ${server.info.uri}`);
