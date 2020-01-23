@@ -84,7 +84,7 @@ const init = async () => {
     handler: async (request, h) => {
       try {
         console.log('ping endpoint hit', request.info.id);
-        await sleep(5000);
+        await sleep(20000);
         const response = `orci.`;
         // response = 9;
 
