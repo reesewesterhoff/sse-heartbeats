@@ -64,6 +64,9 @@ const init = async () => {
   server.route({
     method: 'GET',
     path: '/testConnection',
+    options: {
+      cors: true
+    },
     handler: (request, h) => {
       return 'all good'
     }
