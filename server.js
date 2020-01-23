@@ -63,6 +63,14 @@ const init = async () => {
 
   server.route({
     method: 'GET',
+    path: '/testConnection',
+    handler: (request, h) => {
+      return 'all good'
+    }
+  });
+
+  server.route({
+    method: 'GET',
     path: '/ping',
     options: {
       cors: true,
@@ -76,7 +84,7 @@ const init = async () => {
     handler: async (request, h) => {
       try {
         console.log('ping endpoint hit', request.info.id);
-        await sleep(20000);
+        await sleep(5000);
         const response = `orci.`;
         // response = 9;
 
