@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/reesewesterhoff/sse-heartbeats#readme",
   "dependencies": {
-    "@hapi/hapi": "^19.0.5",
+    "@hapi/hapi": "^19.1.1",
     "@hapi/inert": "^6.0.1",
     "nodemon": "^2.0.2"
   }
